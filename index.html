@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Create and download your EuroLeague 2026/27 final standings.">
+    <title>EuroLeague Standings 2026/27</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d111b'/%3E%3Cpath d='M18 49c18-4 29-15 32-33' stroke='%23ff6b1a' stroke-width='7' fill='none' stroke-linecap='round'/%3E%3Cpath d='M15 21c15 2 25 12 29 27' stroke='%23f4f7fb' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <h1>EuroLeague Standings <span>2026/27</span></h1>
+        <button class="download-button" type="button" id="download-button" aria-label="Download standings as PNG" title="Download standings">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M11 4h2v9.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V4ZM5 19h14v2H5v-2Z"/>
+          </svg>
+        </button>
+      </header>
+
+      <section class="ranking-card" aria-label="Predicted final regular season standings">
+        <ol class="ranking-list" id="ranking-list"></ol>
+      </section>
+    </main>
+
+    <div class="export-stage" aria-hidden="true">
+      <div class="export-card" id="export-card"></div>
+    </div>
+
+    <script src="js/vendor/Sortable.min.js"></script>
+    <script src="js/vendor/html2canvas.min.js"></script>
+    <script src="js/teams.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

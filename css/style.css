@@ -1,0 +1,484 @@
+:root {
+  color-scheme: dark;
+  --bg: #080c14;
+  --panel: rgba(17, 23, 35, 0.86);
+  --panel-solid: #111723;
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #f8fafc;
+  --muted: #aab4c4;
+  --green-strong: #18a66a;
+  --green-soft: #4fc17d;
+  --amber: #f59e0b;
+  --grey: #667085;
+  --orange: #ff5a1f;
+  --shadow: 0 22px 70px rgba(0, 0, 0, 0.32);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-width: 320px;
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 90, 31, 0.18), transparent 34rem),
+    radial-gradient(circle at top right, rgba(24, 166, 106, 0.13), transparent 30rem),
+    linear-gradient(145deg, #080c14 0%, #0e1320 42%, #080c14 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+    linear-gradient(115deg, transparent 0 46%, rgba(255, 255, 255, 0.07) 47% 48%, transparent 49%),
+    linear-gradient(65deg, transparent 0 52%, rgba(255, 255, 255, 0.05) 53% 54%, transparent 55%);
+  background-size: 120px 120px;
+}
+
+button {
+  font: inherit;
+}
+
+.page-shell {
+  width: min(980px, calc(100% - 28px));
+  margin: 0 auto;
+  padding: 22px 0 40px;
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 4px 2px 18px;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 5vw, 3.25rem);
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1 span {
+  color: var(--orange);
+}
+
+.ranking-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+.download-button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 8px;
+  color: var(--text);
+  background: linear-gradient(135deg, #ff6a24, #e44916);
+  box-shadow: 0 10px 28px rgba(255, 90, 31, 0.26);
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.download-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(255, 90, 31, 0.34);
+}
+
+.download-button:focus-visible,
+.drag-handle:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.7);
+  outline-offset: 3px;
+}
+
+.download-button[disabled] {
+  cursor: wait;
+  opacity: 0.68;
+  transform: none;
+}
+
+.download-button svg {
+  width: 25px;
+  height: 25px;
+}
+
+.ranking-card {
+  padding: 10px;
+}
+
+.ranking-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.team-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 48px 50px minmax(0, 1fr) 44px;
+  align-items: center;
+  min-height: 64px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(var(--zone-rgb), 0.28), rgba(255, 255, 255, 0.045) 48%),
+    var(--panel-solid);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  touch-action: pan-y;
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.team-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 5px;
+  background: rgb(var(--zone-rgb));
+}
+
+.team-row:hover {
+  border-color: rgba(var(--zone-rgb), 0.7);
+  transform: translateY(-1px);
+}
+
+.team-row.sortable-chosen {
+  border-color: rgba(var(--zone-rgb), 0.9);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.38);
+}
+
+.team-row.sortable-ghost {
+  opacity: 0.36;
+}
+
+.position {
+  color: rgb(var(--zone-rgb));
+  font-size: 1.28rem;
+  font-weight: 900;
+  text-align: center;
+}
+
+.logo-wrap {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.team-logo {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.team-name {
+  min-width: 0;
+  padding: 0 12px;
+}
+
+.team-name strong {
+  display: block;
+  overflow: hidden;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-name span {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.drag-handle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 8px;
+  color: #c8d0df;
+  background: transparent;
+  cursor: grab;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.drag-handle svg {
+  width: 22px;
+  height: 22px;
+}
+
+.zone-home {
+  --zone-rgb: 24, 166, 106;
+}
+
+.zone-playoffs {
+  --zone-rgb: 79, 193, 125;
+}
+
+.zone-playin {
+  --zone-rgb: 245, 158, 11;
+}
+
+.zone-out {
+  --zone-rgb: 102, 112, 133;
+}
+
+.legend-swatch.zone-home {
+  background: var(--green-strong);
+}
+
+.legend-swatch.zone-playoffs {
+  background: var(--green-soft);
+}
+
+.legend-swatch.zone-playin {
+  background: var(--amber);
+}
+
+.legend-swatch.zone-out {
+  background: var(--grey);
+}
+
+.export-stage {
+  position: fixed;
+  left: -9999px;
+  top: 0;
+}
+
+.export-card {
+  width: 1080px;
+  height: 1350px;
+  padding: 58px 64px;
+  color: #f8fafc;
+  background:
+    radial-gradient(circle at 0 0, rgba(255, 96, 28, 0.28), transparent 430px),
+    radial-gradient(circle at 100% 4%, rgba(24, 166, 106, 0.16), transparent 420px),
+    linear-gradient(150deg, #08101c 0%, #111827 54%, #070b13 100%);
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.export-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.export-kicker {
+  margin: 0 0 8px;
+  color: #ff6a24;
+  font-size: 23px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.export-title {
+  margin: 0;
+  font-size: 66px;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+.export-subtitle {
+  margin: 14px 0 0;
+  color: #cbd5e1;
+  font-size: 25px;
+}
+
+.export-legend {
+  display: grid;
+  gap: 9px;
+  color: #d9e1ee;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.export-legend span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.export-list {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.export-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 66px 58px 1fr;
+  align-items: center;
+  min-height: 49px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background:
+    linear-gradient(90deg, rgba(var(--zone-rgb), 0.32), rgba(255, 255, 255, 0.055) 54%),
+    #121a28;
+}
+
+.export-row::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7px;
+  background: rgb(var(--zone-rgb));
+}
+
+.export-position {
+  grid-column: 1;
+  color: rgb(var(--zone-rgb));
+  font-size: 25px;
+  font-weight: 950;
+  text-align: center;
+}
+
+.export-logo-wrap {
+  display: grid;
+  grid-column: 2;
+  place-items: center;
+  width: 41px;
+  height: 41px;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.export-logo {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+}
+
+.export-team {
+  grid-column: 3;
+  overflow: hidden;
+  padding-right: 18px;
+  font-size: 24px;
+  font-weight: 850;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.export-footer {
+  margin-top: 22px;
+  color: #93a2b7;
+  font-size: 16px;
+}
+
+@media (max-width: 760px) {
+  .page-shell {
+    width: min(100% - 18px, 640px);
+    padding-top: 18px;
+  }
+
+  .hero {
+    padding-bottom: 14px;
+  }
+
+  h1 {
+    max-width: 16ch;
+  }
+
+  .team-row {
+    grid-template-columns: 41px 45px minmax(0, 1fr) 46px;
+    min-height: 58px;
+  }
+
+  .position {
+    font-size: 1.12rem;
+  }
+
+  .logo-wrap {
+    width: 37px;
+    height: 37px;
+  }
+
+  .team-logo {
+    width: 31px;
+    height: 31px;
+  }
+
+  .team-name {
+    padding: 0 8px;
+  }
+
+  .team-name strong {
+    font-size: 0.93rem;
+  }
+
+  .team-name span {
+    font-size: 0.72rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .page-shell {
+    width: min(100% - 12px, 420px);
+  }
+
+  .ranking-card {
+    padding: 7px;
+  }
+
+  .ranking-list {
+    gap: 7px;
+  }
+
+  .team-row {
+    grid-template-columns: 36px 41px minmax(0, 1fr) 44px;
+  }
+
+  .team-name strong {
+    font-size: 0.88rem;
+  }
+}
