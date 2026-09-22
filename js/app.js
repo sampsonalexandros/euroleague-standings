@@ -135,7 +135,59 @@
     );
   }
 
+  function isIosDevice() {
+    return /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  }
+
+  function canvasToBlob(canvas) {
+    return new Promise((resolve, reject) => {
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob);
+        else reject(new Error("The browser could not create the PNG file."));
+      }, "image/png");
+    });
+  }
+
+  function triggerBlobDownload(blob, filename) {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = url;
+    link.hidden = true;
+    document.body.append(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+
+  function showIosSaveView(previewWindow, blob) {
+    const url = URL.createObjectURL(blob);
+    const previewDocument = previewWindow.document;
+    previewDocument.title = "EuroLeague Standings 2026/27";
+    previewDocument.body.innerHTML = "";
+    previewDocument.body.style.cssText = "margin:0;padding:16px;background:#080c14;color:#fff;font-family:system-ui;text-align:center";
+
+    const instruction = previewDocument.createElement("p");
+    instruction.textContent = "Press and hold the image, then choose Save to Photos.";
+    instruction.style.cssText = "margin:0 0 14px;font-size:16px;font-weight:700";
+
+    const image = previewDocument.createElement("img");
+    image.src = url;
+    image.alt = "EuroLeague standings 2026/27";
+    image.style.cssText = "display:block;width:100%;height:auto;margin:0 auto";
+
+    previewDocument.body.append(instruction, image);
+    previewWindow.addEventListener("unload", () => URL.revokeObjectURL(url), { once: true });
+  }
+
   async function downloadPrediction() {
+    const iosPreview = isIosDevice() ? window.open("", "_blank") : null;
+    if (iosPreview) {
+      iosPreview.document.body.style.cssText = "margin:0;padding:32px;background:#080c14;color:#fff;font-family:system-ui;text-align:center";
+      iosPreview.document.body.textContent = "Creating your standings image...";
+    }
+
     downloadButton.disabled = true;
     downloadButton.setAttribute("aria-label", "Creating PNG");
     buildExportCard();
@@ -144,15 +196,17 @@
       await waitForImages(exportCard);
       const canvas = await html2canvas(exportCard, {
         backgroundColor: null,
-        scale: 2,
+        scale: window.matchMedia("(max-width: 760px)").matches ? 1 : 2,
         useCORS: false,
         logging: false,
       });
-      const link = document.createElement("a");
-      link.download = "euroleague-standings-2026-27.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+      const blob = await canvasToBlob(canvas);
+      const filename = "euroleague-standings-2026-27.png";
+
+      if (iosPreview) showIosSaveView(iosPreview, blob);
+      else triggerBlobDownload(blob, filename);
     } catch (error) {
+      iosPreview?.close();
       window.alert("The image could not be created. Please refresh the page and try again.");
       console.error(error);
     } finally {
